@@ -19,4 +19,5 @@ module.exports = {
       template: path.resolve(__dirname, "client/pub/index.html"),
     }),
   ],
+  watch: true,
 };

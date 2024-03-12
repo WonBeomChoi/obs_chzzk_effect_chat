@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 
 import {ChannelData} from './client/types/chatProps.type';
 
@@ -22,8 +23,9 @@ const getChannelData = async (id: string): Promise<ChannelData|null> => {
     const accessTokenRes = await fetch(`https://comm-api.game.naver.com/nng_main/v1/chats/access-token?channelId=${channelId}&chatType=STREAMING`)
     const accessTokenData = await accessTokenRes.json();
     const accessToken = accessTokenData.content.accessToken;
+    
     return {
-      accessToken,channelId
+      accessToken,channelId,uid:id
     }
   } catch (error) {
     console.error('Error:', error);
@@ -31,6 +33,7 @@ const getChannelData = async (id: string): Promise<ChannelData|null> => {
   }
 }
 app.use('/chat', express.static(path.join(__dirname, 'dist/client')));
+app.use('/effects', express.static(path.join(__dirname, '/effects')));
 
 app.get('/chat/:id', async (req: Request, res: Response) => {
   try {
@@ -40,10 +43,11 @@ app.get('/chat/:id', async (req: Request, res: Response) => {
       res.status(404).send('Not Found');
       return;
     }
-    const component = React.createElement(App, channelData);
+    const sheet = new ServerStyleSheet();
+    const component = sheet.collectStyles(React.createElement((App), channelData));
     const appString = renderToString(component);
     const indexHtml = fs.readFileSync('./dist/client/index.html', 'utf8');
-    const channelDataAtrribute = `data-channel-id="${channelData.channelId}" data-access-token="${channelData.accessToken}"`;
+    const channelDataAtrribute = `data-user-id="${channelData.uid}" data-channel-id="${channelData.channelId}" data-access-token="${channelData.accessToken}"`;
     const renderedHtml = indexHtml.replace('<div id="root"></div>', `<div id="root" ${channelDataAtrribute}>${appString}</div>`);
     res.send(renderedHtml)
   } catch (error) {
