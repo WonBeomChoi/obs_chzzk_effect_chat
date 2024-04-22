@@ -1,30 +1,46 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChannelData } from "../types/chatProps.type";
 
-const useChat = (props: { channelData: ChannelData }) => {
-  const [messages, setMessages] = useState<any>([]);
+const TRIGGERS = [
+  {
+    keyword: "차태경",
+    eventName: "차태경",
+  },
+  {
+    keyword: "유저",
+    eventName: "차태경",
+  },
+  {
+    keyword: "사출",
+    eventName: "사출",
+  },
+  {
+    keyword: "이벤트",
+    eventName: "사출",
+  },
+];
 
-  const messageParser = useCallback((message: any) => {
-    return message.map((msg: any) => {
-      console.log(msg);
-      if (msg.msg.includes("차태경")) {
-        const event: CustomEvent = new CustomEvent("차태경");
-        window.dispatchEvent(event);
-      }
-      if (msg.msg.includes("유저")) {
-        const event: CustomEvent = new CustomEvent("차태경");
-        window.dispatchEvent(event);
-      }
-      if (msg.msg.includes("사출")) {
-        const event: CustomEvent = new CustomEvent("사출");
-        window.dispatchEvent(event);
-      }
-      if (msg.msg.includes("이벤트")) {
-        const event = new CustomEvent("사출");
-        window.dispatchEvent(event);
-      }
+interface Message {
+  chatId: string;
+  emojis: Record<string, string>;
+  msg: string;
+  nickname: string;
+}
+
+const useChat = (props: { channelData: ChannelData }) => {
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const messageParser = useCallback((messageList: any) => {
+    return messageList.map((msg: any) => {
+      TRIGGERS.map(({ keyword, eventName }) => {
+        if (msg.msg.includes(keyword)) {
+          const event: CustomEvent = new CustomEvent(eventName);
+          window.dispatchEvent(event);
+        }
+      });
       const emojis = JSON.parse(msg.extras).emojis;
       const profile = JSON.parse(msg.profile);
+
       return {
         nickname: profile.nickname,
         msg: msg.msg,
@@ -33,6 +49,7 @@ const useChat = (props: { channelData: ChannelData }) => {
       };
     });
   }, []);
+
   useEffect(() => {
     const ws = new WebSocket("wss://kr-ss1.chat.naver.com/chat");
     ws.onopen = () => {
@@ -98,9 +115,11 @@ const useChat = (props: { channelData: ChannelData }) => {
             })
           );
           break;
+        // case문에 or 연산 추가는?
         case 93101: //채팅메시지 수신
-          setMessages((prevMessages: any[]) => {
+          setMessages((prevMessages: any) => {
             const messages = [...prevMessages, ...messageParser(msg.bdy)];
+
             if (messages.length > 20) {
               return messages.slice(messages.length - 20);
             }
@@ -108,8 +127,9 @@ const useChat = (props: { channelData: ChannelData }) => {
           });
           break;
         case 93102: //도네이션 수신
-          setMessages((prevMessages: any[]) => {
+          setMessages((prevMessages: any) => {
             const messages = [...prevMessages, ...messageParser(msg.bdy)];
+
             if (messages.length > 20) {
               return messages.slice(messages.length - 20);
             }
