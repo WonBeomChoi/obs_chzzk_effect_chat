@@ -23,16 +23,8 @@ export function registMouseDownDrag(
         onDragChange(deltaH, deltaV, 0, 0);
       } else if (behavior === "resize") {
         const { dx, dy, dw, dh } = getDelta(deltaH, deltaV, direction);
-        if (clickEvent.shiftKey && direction.V && direction.H) {
-          console.log("aspect fix");
-          const { clientWidth, clientHeight } = (
-            clickEvent.target as HTMLDivElement
-          ).parentElement!;
 
-          onDragChange(dx, dy, dw, (dw * clientHeight) / clientWidth);
-        } else {
-          onDragChange(dx, dy, dw, dh);
-        }
+        onDragChange(dx, dy, dw, dh);
       }
     };
 
@@ -44,6 +36,9 @@ export function registMouseDownDrag(
     document.addEventListener("mouseup", mouseUpHandler, { once: true });
   };
 }
+
+const MIN_WIDTH = 60;
+const MIN_HEIGHT = 30;
 
 function InteractionLayout({ children }: { children: ReactNode }) {
   const [{ x, y }, setPosition] = useState({
@@ -76,8 +71,8 @@ function InteractionLayout({ children }: { children: ReactNode }) {
       y: y + dy,
     });
     setSize({
-      w: w + dw,
-      h: h + dh,
+      w: MIN_WIDTH > w + dw ? MIN_WIDTH : w + dw,
+      h: MIN_HEIGHT > h + dh ? MIN_HEIGHT : h + dh,
     });
   };
 
@@ -142,13 +137,15 @@ const DiagnalResize = styled(ResizeDefault)`
 
 const VerticalResize = styled(ResizeDefault)`
   width: 0.5rem;
-  height: 100%;
+  /* height: 100%; */
+  height: 0.5rem;
   cursor: ew-resize;
 `;
 
 const HorizonResize = styled(ResizeDefault)`
   height: 0.5rem;
-  width: 100%;
+  /* width: 100%; */
+  width: 0.5rem;
   cursor: ns-resize;
 `;
 
