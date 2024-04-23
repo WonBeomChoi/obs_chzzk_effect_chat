@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { ChannelData } from "../types/chatProps.type";
 import useChat from "../hooks/useChat";
 import styled from "styled-components";
+import InteractionLayout from "./InteractionLayout/InteractionLayout";
 
 const ChatLayout = (props: { chatList: { messages: any[] } }) => {
   const { chatList } = props;
   return (
-    <>
+    <InteractionLayout>
       <Container>
         {chatList.messages.map((msg: any) => {
           return (
@@ -17,21 +18,9 @@ const ChatLayout = (props: { chatList: { messages: any[] } }) => {
           );
         })}
       </Container>
-    </>
+    </InteractionLayout>
   );
 };
-
-const Effect = styled.span<{ effect: string }>`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-image: url(${(props) => props.effect});
-  opacity: 0.6;
-
-  background-size: 100% 100%;
-`;
 
 const Nickname = styled.span`
   font-weight: bold;
@@ -44,8 +33,9 @@ const Container = styled.div`
   justify-content: flex-end;
   font-size: 1.5rem;
   color: white;
-  width: 600px;
-  height: 800px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 export default ChatLayout;
