@@ -1,41 +1,6 @@
-import { log } from "console";
 import React, { ReactNode, useEffect, useState } from "react";
 import styled from "styled-components";
-import { getDelta } from "./util";
-
-type Direction = {
-  V?: "N" | "S";
-  H?: "W" | "E";
-};
-
-export function registMouseDownDrag(
-  onDragChange: (dx: number, dy: number, dw: number, dh: number) => void,
-  direction: Direction,
-  behavior: "move" | "resize" = "resize"
-) {
-  return (clickEvent: React.MouseEvent<Element, MouseEvent>) => {
-    clickEvent.stopPropagation();
-    const mouseMoveHandler = (moveEvent: MouseEvent) => {
-      // 이동위치 - 클릭위치
-      const deltaH = moveEvent.pageX - clickEvent.pageX;
-      const deltaV = moveEvent.pageY - clickEvent.pageY;
-      if (behavior === "move") {
-        onDragChange(deltaH, deltaV, 0, 0);
-      } else if (behavior === "resize") {
-        const { dx, dy, dw, dh } = getDelta(deltaH, deltaV, direction);
-
-        onDragChange(dx, dy, dw, dh);
-      }
-    };
-
-    const mouseUpHandler = () => {
-      document.removeEventListener("mousemove", mouseMoveHandler);
-    };
-
-    document.addEventListener("mousemove", mouseMoveHandler);
-    document.addEventListener("mouseup", mouseUpHandler, { once: true });
-  };
-}
+import { registMouseDownDrag } from "./util";
 
 const MIN_WIDTH = 60;
 const MIN_HEIGHT = 30;
@@ -137,15 +102,13 @@ const DiagnalResize = styled(ResizeDefault)`
 
 const VerticalResize = styled(ResizeDefault)`
   width: 0.5rem;
-  /* height: 100%; */
-  height: 0.5rem;
+  height: 100%;
   cursor: ew-resize;
 `;
 
 const HorizonResize = styled(ResizeDefault)`
   height: 0.5rem;
-  /* width: 100%; */
-  width: 0.5rem;
+  width: 100%;
   cursor: ns-resize;
 `;
 
