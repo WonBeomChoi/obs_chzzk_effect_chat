@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { registMouseDownDrag } from "./util";
 import { useInteractions } from "./hooks";
@@ -7,6 +7,17 @@ import { InteractionLayoutProps } from "./type";
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
   const { x, y, width, height, handleMove, handleResize } =
     useInteractions(type);
+  const [onSetting, setOnSetting] = useState(false);
+
+  // 이벤트 잠금
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && (e.key === "k" || e.key === "ㅏ")) {
+        setOnSetting((prev) => !prev);
+      }
+    });
+  }, []);
+
   return (
     <Layout
       style={{
@@ -14,16 +25,30 @@ function InteractionLayout({ children, type }: InteractionLayoutProps) {
         width: width,
         height: height,
       }}
-      onMouseDown={registMouseDownDrag(handleMove, {}, "move")}
+      onMouseDown={
+        onSetting ? registMouseDownDrag(handleMove, {}, "move") : undefined
+      }
     >
-      <N onMouseDown={registMouseDownDrag(handleResize, { V: "N" })} />
-      <S onMouseDown={registMouseDownDrag(handleResize, { V: "S" })} />
-      <W onMouseDown={registMouseDownDrag(handleResize, { H: "W" })} />
-      <E onMouseDown={registMouseDownDrag(handleResize, { H: "E" })} />
-      <NW onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "W" })} />
-      <NE onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "E" })} />
-      <SW onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "W" })} />
-      <SE onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "E" })} />
+      {onSetting && (
+        <>
+          <N onMouseDown={registMouseDownDrag(handleResize, { V: "N" })} />
+          <S onMouseDown={registMouseDownDrag(handleResize, { V: "S" })} />
+          <W onMouseDown={registMouseDownDrag(handleResize, { H: "W" })} />
+          <E onMouseDown={registMouseDownDrag(handleResize, { H: "E" })} />
+          <NW
+            onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "W" })}
+          />
+          <NE
+            onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "E" })}
+          />
+          <SW
+            onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "W" })}
+          />
+          <SE
+            onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "E" })}
+          />
+        </>
+      )}
       {children}
     </Layout>
   );
@@ -31,8 +56,9 @@ function InteractionLayout({ children, type }: InteractionLayoutProps) {
 
 export default InteractionLayout;
 
+// cursor style : 추후 삭제 (obs에선 안쓰임)
+
 const Layout = styled.div`
-  border: 1px dashed red;
   position: absolute;
   cursor: move;
 `;
@@ -41,7 +67,7 @@ const ResizeDefault = styled.div`
   position: absolute;
   height: 0.5rem;
   width: 0.5rem;
-  background-color: #12121230;
+  background-color: #ff000050;
 
   &.top {
     top: -0.5rem;
