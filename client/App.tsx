@@ -6,7 +6,7 @@ import { ChannelData } from "./types/chatProps.type";
 import EffectLayout from "./Components/EffectLayout";
 import { EffectType } from "./types/effect.type";
 import styled from "styled-components";
-import { ConfigContext } from "./Components/context/config";
+import { ConfigContext } from "./context/config";
 
 const CONFIG = {
   chat: {
@@ -28,20 +28,22 @@ const CONFIG = {
 };
 
 const EFFECTS = [
-  { eventName: "차태경", effectName: "이지툰", runningTime: 2000 },
-  { eventName: "사출", effectName: "사출", runningTime: 3000 },
+  { keyword: "차태경", url: "이지툰", runningTime: 2000 },
+  { keyword: "사출", url: "사출", runningTime: 3000 },
 ];
 
 function App(props: ChannelData) {
+  const [showChat, setShowChat] = useState<boolean>(false);
+  const [showEffect, setShowEffect] = useState<boolean>(false);
   const [effect, setEffect] = useState<EffectType>({
     effect: true,
     effectName: "",
   });
   useEffect(() => {
-    EFFECTS.forEach(({ eventName, effectName, runningTime }) => {
-      window.addEventListener(eventName, () => {
+    EFFECTS.forEach(({ keyword, url, runningTime }) => {
+      window.addEventListener(keyword, () => {
         if (effect) {
-          setEffect({ effect: false, effectName: effectName });
+          setEffect({ effect: false, effectName: url });
           setTimeout(() => {
             setEffect({ effect: true, effectName: "" });
           }, runningTime);
@@ -49,13 +51,35 @@ function App(props: ChannelData) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    useEffect(() => {
+      const handleShowState: (e: KeyboardEvent) => any = (e) => {
+        if (e.ctrlKey && e.key === "q") {
+          setShowChat((prev) => !prev);
+        }
+        if (e.ctrlKey && e.key === "e") {
+          setShowEffect((prev) => !prev);
+        }
+      };
+
+      document.addEventListener("keydown", handleShowState);
+
+      return () => {
+        document.removeEventListener("keydown", handleShowState);
+      };
+    }, []);
+  }, []);
+
   const chatList = useChat({ channelData: props });
 
   return (
     <ConfigContext.Provider value={CONFIG}>
       <Container>
-        <ChatLayout chatList={chatList} />
-        <EffectLayout effect={effect.effect} effectName={effect.effectName} />
+        {showChat && <ChatLayout chatList={chatList} />}
+        {showEffect && (
+          <EffectLayout effect={effect.effect} effectName={effect.effectName} />
+        )}
       </Container>
     </ConfigContext.Provider>
   );
@@ -63,8 +87,6 @@ function App(props: ChannelData) {
 
 const Container = styled.div`
   position: relative;
-  height: calc(100vh - 16px);
-  box-shadow: inset 0px 0px 1px black;
 `;
 
 export default App;
