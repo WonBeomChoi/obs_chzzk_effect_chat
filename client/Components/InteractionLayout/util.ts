@@ -1,11 +1,4 @@
-import { ChangeHandler } from "./type";
-
-// H : horizon
-// V : Vertical
-type Direction = {
-  V?: string;
-  H?: string;
-};
+import { ChangeHandler, Direction } from "./type";
 
 export function registMouseDownDrag(
   onDragChange: ChangeHandler,

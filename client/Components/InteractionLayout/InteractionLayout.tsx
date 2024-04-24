@@ -1,21 +1,18 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styled from "styled-components";
 import { registMouseDownDrag } from "./util";
 import { useInteractions } from "./hooks";
-
-interface InteractionLayoutProps {
-  children: ReactNode;
-  type: "chat" | "effect";
-}
+import { InteractionLayoutProps } from "./type";
 
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
-  const { x, y, w, h, handleMove, handleResize } = useInteractions(type);
+  const { x, y, width, height, handleMove, handleResize } =
+    useInteractions(type);
   return (
     <Layout
       style={{
         transform: `translateX(${x}px) translateY(${y}px)`,
-        width: w,
-        height: h,
+        width: width,
+        height: height,
       }}
       onMouseDown={registMouseDownDrag(handleMove, {}, "move")}
     >
