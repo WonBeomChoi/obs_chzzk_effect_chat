@@ -1,3 +1,5 @@
+import { ChangeHandler } from "./type";
+
 // H : horizon
 // V : Vertical
 type Direction = {
@@ -5,15 +7,8 @@ type Direction = {
   H?: string;
 };
 
-type onDragType = (
-  deltaX: number,
-  deltaY: number,
-  deltaWidth: number,
-  deltaHeight: number
-) => void;
-
 export function registMouseDownDrag(
-  onDragChange: onDragType,
+  onDragChange: ChangeHandler,
   direction: Direction,
   behavior: "move" | "resize" = "resize"
 ) {

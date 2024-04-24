@@ -1,7 +1,7 @@
-import React, { ReactNode, useContext, useEffect, useState } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { registMouseDownDrag } from "./util";
-import { ConfigContext } from "../context/config";
+import { useInteractions } from "./hooks";
 
 interface InteractionLayoutProps {
   children: ReactNode;
@@ -9,54 +9,7 @@ interface InteractionLayoutProps {
 }
 
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
-  const CONFIG = useContext(ConfigContext)[type];
-
-  const { MIN_WIDTH, MIN_HEIGHT } = CONFIG;
-
-  const [{ x, y }, setPosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [{ w, h }, setSize] = useState({
-    w: 0,
-    h: 0,
-  });
-
-  useEffect(() => {
-    const { DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT } = CONFIG;
-    setPosition({
-      x: DEFAULT_X,
-      y: DEFAULT_Y,
-    });
-    setSize({
-      w: DEFAULT_WIDTH,
-      h: DEFAULT_HEIGHT,
-    });
-  }, []);
-
-  const handleMove = (deltaX: number, deltaY: number) => {
-    setPosition({
-      x: x + deltaX,
-      y: y + deltaY,
-    });
-  };
-
-  const handleResize = (
-    deltaX: number,
-    deltaY: number,
-    deltaWidth: number,
-    deltaHeight: number
-  ) => {
-    setPosition({
-      x: Math.min(x + deltaX, x + w - MIN_WIDTH),
-      y: Math.min(y + deltaY, y + h - MIN_HEIGHT),
-    });
-    setSize({
-      w: Math.max(MIN_WIDTH, w + deltaWidth),
-      h: Math.max(MIN_HEIGHT, h + deltaHeight),
-    });
-  };
-
+  const { x, y, w, h, handleMove, handleResize } = useInteractions(type);
   return (
     <Layout
       style={{
