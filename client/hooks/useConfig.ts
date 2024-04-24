@@ -19,6 +19,7 @@ export function useConfig() {
   }, []);
 
   // mouse up 시 저장
+  // 먼가 로직을 여기 두지 말고 Interaction Layout 에 넣는게 나을듯?
   useEffect(() => {
     const handler = () => {
       setConfig({
