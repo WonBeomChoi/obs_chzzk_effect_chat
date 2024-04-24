@@ -1,11 +1,18 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { registMouseDownDrag } from "./util";
+import { ConfigContext } from "../context/config";
 
-const MIN_WIDTH = 60;
-const MIN_HEIGHT = 30;
+interface InteractionLayoutProps {
+  children: ReactNode;
+  type: "chat" | "effect";
+}
 
-function InteractionLayout({ children }: { children: ReactNode }) {
+function InteractionLayout({ children, type }: InteractionLayoutProps) {
+  const CONFIG = useContext(ConfigContext)[type];
+
+  const { MIN_WIDTH, MIN_HEIGHT } = CONFIG;
+
   const [{ x, y }, setPosition] = useState({
     x: 0,
     y: 0,
@@ -16,28 +23,37 @@ function InteractionLayout({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    const DEFAULT_X = 500;
-    const DEFAULT_Y = 500;
-    const DEFAULT_W = 240;
-    const DEFAULT_H = 120;
+    const { DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT } = CONFIG;
     setPosition({
       x: DEFAULT_X,
       y: DEFAULT_Y,
     });
     setSize({
-      w: DEFAULT_W,
-      h: DEFAULT_H,
+      w: DEFAULT_WIDTH,
+      h: DEFAULT_HEIGHT,
     });
   }, []);
 
-  const handleDrag = (dx: number, dy: number, dw: number, dh: number) => {
+  const handleMove = (deltaX: number, deltaY: number) => {
     setPosition({
-      x: Math.min(x + dx, x + w - MIN_WIDTH),
-      y: Math.min(y + dy, y + h - MIN_HEIGHT),
+      x: x + deltaX,
+      y: y + deltaY,
+    });
+  };
+
+  const handleResize = (
+    deltaX: number,
+    deltaY: number,
+    deltaWidth: number,
+    deltaHeight: number
+  ) => {
+    setPosition({
+      x: Math.min(x + deltaX, x + w - MIN_WIDTH),
+      y: Math.min(y + deltaY, y + h - MIN_HEIGHT),
     });
     setSize({
-      w: Math.max(MIN_WIDTH, w + dw),
-      h: Math.max(MIN_HEIGHT, h + dh),
+      w: Math.max(MIN_WIDTH, w + deltaWidth),
+      h: Math.max(MIN_HEIGHT, h + deltaHeight),
     });
   };
 
@@ -48,16 +64,16 @@ function InteractionLayout({ children }: { children: ReactNode }) {
         width: w,
         height: h,
       }}
-      onMouseDown={registMouseDownDrag(handleDrag, {}, "move")}
+      onMouseDown={registMouseDownDrag(handleMove, {}, "move")}
     >
-      <N onMouseDown={registMouseDownDrag(handleDrag, { V: "N" })} />
-      <S onMouseDown={registMouseDownDrag(handleDrag, { V: "S" })} />
-      <W onMouseDown={registMouseDownDrag(handleDrag, { H: "W" })} />
-      <E onMouseDown={registMouseDownDrag(handleDrag, { H: "E" })} />
-      <NW onMouseDown={registMouseDownDrag(handleDrag, { V: "N", H: "W" })} />
-      <NE onMouseDown={registMouseDownDrag(handleDrag, { V: "N", H: "E" })} />
-      <SW onMouseDown={registMouseDownDrag(handleDrag, { V: "S", H: "W" })} />
-      <SE onMouseDown={registMouseDownDrag(handleDrag, { V: "S", H: "E" })} />
+      <N onMouseDown={registMouseDownDrag(handleResize, { V: "N" })} />
+      <S onMouseDown={registMouseDownDrag(handleResize, { V: "S" })} />
+      <W onMouseDown={registMouseDownDrag(handleResize, { H: "W" })} />
+      <E onMouseDown={registMouseDownDrag(handleResize, { H: "E" })} />
+      <NW onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "W" })} />
+      <NE onMouseDown={registMouseDownDrag(handleResize, { V: "N", H: "E" })} />
+      <SW onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "W" })} />
+      <SE onMouseDown={registMouseDownDrag(handleResize, { V: "S", H: "E" })} />
       {children}
     </Layout>
   );
