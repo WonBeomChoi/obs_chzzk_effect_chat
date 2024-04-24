@@ -13,7 +13,7 @@ const useChat = (props: { channelData: ChannelData }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { channelData } = props;
 
-  const messageParser = useCallback((messageList: any) => {
+  const messageParser = useCallback((messageList: any): Message[] => {
     return messageList.map((message: any) => {
       const { msg, extras, profile, uid, utime } = message;
 
