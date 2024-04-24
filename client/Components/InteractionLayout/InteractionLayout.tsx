@@ -32,12 +32,12 @@ function InteractionLayout({ children }: { children: ReactNode }) {
 
   const handleDrag = (dx: number, dy: number, dw: number, dh: number) => {
     setPosition({
-      x: x + dx,
-      y: y + dy,
+      x: Math.min(x + dx, x + w - MIN_WIDTH),
+      y: Math.min(y + dy, y + h - MIN_HEIGHT),
     });
     setSize({
-      w: MIN_WIDTH > w + dw ? MIN_WIDTH : w + dw,
-      h: MIN_HEIGHT > h + dh ? MIN_HEIGHT : h + dh,
+      w: Math.max(MIN_WIDTH, w + dw),
+      h: Math.max(MIN_HEIGHT, h + dh),
     });
   };
 
