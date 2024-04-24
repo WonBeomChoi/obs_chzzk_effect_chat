@@ -1,44 +1,25 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { ConfigContext } from "../../context/config";
 import { ChangeHandler } from "./type";
 
-export function useConfigValues() {
+function useConfigValues() {
   const values = useContext(ConfigContext);
   if (!values) throw new Error("context api error");
   return values;
 }
 
 export function useInteractions(type: "chat" | "effect") {
-  const CONFIG = useConfigValues()[type];
-
-  const { MIN_WIDTH, MIN_HEIGHT } = CONFIG;
-
-  const [{ x, y }, setPosition] = useState({
-    x: 0,
-    y: 0,
-  });
-  const [{ w, h }, setSize] = useState({
-    w: 0,
-    h: 0,
-  });
-
-  useEffect(() => {
-    const { DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH, DEFAULT_HEIGHT } = CONFIG;
-    setPosition({
-      x: DEFAULT_X,
-      y: DEFAULT_Y,
-    });
-    setSize({
-      w: DEFAULT_WIDTH,
-      h: DEFAULT_HEIGHT,
-    });
-  }, []);
+  const {
+    data: { x, y, width, height, MIN_WIDTH, MIN_HEIGHT },
+    setData,
+  } = useConfigValues()[type];
 
   const handleMove: ChangeHandler = (deltaX, deltaY) => {
-    setPosition({
+    setData((prev) => ({
+      ...prev,
       x: x + deltaX,
       y: y + deltaY,
-    });
+    }));
   };
 
   const handleResize: ChangeHandler = (
@@ -47,15 +28,14 @@ export function useInteractions(type: "chat" | "effect") {
     deltaWidth,
     deltaHeight
   ) => {
-    setPosition({
-      x: Math.min(x + deltaX, x + w - MIN_WIDTH),
-      y: Math.min(y + deltaY, y + h - MIN_HEIGHT),
-    });
-    setSize({
-      w: Math.max(MIN_WIDTH, w + deltaWidth!),
-      h: Math.max(MIN_HEIGHT, h + deltaHeight!),
-    });
+    setData((prev) => ({
+      ...prev,
+      x: Math.min(x + deltaX, x + width - MIN_WIDTH),
+      y: Math.min(y + deltaY, y + height - MIN_HEIGHT),
+      width: Math.max(MIN_WIDTH, width + deltaWidth!),
+      height: Math.max(MIN_HEIGHT, height + deltaHeight!),
+    }));
   };
 
-  return { x, y, w, h, handleMove, handleResize };
+  return { x, y, width, height, handleMove, handleResize };
 }

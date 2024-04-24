@@ -1,17 +1,22 @@
-import { createContext } from "react";
+import { Dispatch, SetStateAction, createContext } from "react";
 
-interface Config {
-  DEFAULT_X: number;
-  DEFAULT_Y: number;
-  DEFAULT_WIDTH: number;
-  DEFAULT_HEIGHT: number;
+export interface Config {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
   MIN_WIDTH: number;
   MIN_HEIGHT: number;
 }
 
+interface ConfigData {
+  data: Config;
+  setData: Dispatch<SetStateAction<Config>>;
+}
+
 interface ContextValues {
-  chat: Config;
-  effect: Config;
+  chat: ConfigData;
+  effect: ConfigData;
 }
 
 export const ConfigContext = createContext<ContextValues | undefined>(
