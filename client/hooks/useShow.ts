@@ -6,11 +6,28 @@ export function useShow() {
 
   useEffect(() => {
     const handleShowState: (e: KeyboardEvent) => any = (e) => {
-      if (e.ctrlKey && e.key === "q") {
-        setShowChat((prev) => !prev);
-      }
-      if (e.ctrlKey && e.key === "e") {
-        setShowEffect((prev) => !prev);
+      const { ctrlKey, key } = e;
+      if (ctrlKey) {
+        switch (key) {
+          case "q":
+          case "ㅂ":
+            setShowChat((prev) => !prev);
+            break;
+          case "w":
+          case "ㅈ":
+            setShowEffect((prev) => !prev);
+            break;
+          case "e":
+          case "ㄷ":
+            setShowChat(true);
+            setShowEffect(true);
+            break;
+          case "r":
+          case "ㄱ":
+            setShowChat(false);
+            setShowEffect(false);
+            break;
+        }
       }
     };
 
