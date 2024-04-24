@@ -8,10 +8,9 @@ import { EffectType } from "./types/effect.type";
 import styled from "styled-components";
 import { ConfigContext } from "./context/config";
 import { CONFIG, EFFECTS } from "./constants/constants";
+import { useShow } from "./hooks/useShow";
 
 function App(props: ChannelData) {
-  const [showChat, setShowChat] = useState<boolean>(false);
-  const [showEffect, setShowEffect] = useState<boolean>(false);
   const [effect, setEffect] = useState<EffectType>({
     effect: true,
     effectName: "",
@@ -29,22 +28,7 @@ function App(props: ChannelData) {
     });
   }, []);
 
-  useEffect(() => {
-    const handleShowState: (e: KeyboardEvent) => any = (e) => {
-      if (e.ctrlKey && e.key === "q") {
-        setShowChat((prev) => !prev);
-      }
-      if (e.ctrlKey && e.key === "e") {
-        setShowEffect((prev) => !prev);
-      }
-    };
-
-    document.addEventListener("keydown", handleShowState);
-    return () => {
-      document.removeEventListener("keydown", handleShowState);
-    };
-  }, []);
-
+  const { showChat, showEffect } = useShow();
   const chatList = useChat({ channelData: props });
 
   return (
