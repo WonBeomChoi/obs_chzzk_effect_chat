@@ -7,7 +7,7 @@ import InteractionLayout from "./InteractionLayout/InteractionLayout";
 const ChatLayout = (props: { chatList: { messages: any[] } }) => {
   const { chatList } = props;
   return (
-    <InteractionLayout>
+    <InteractionLayout type="chat">
       <Container>
         {chatList.messages.map((msg: any) => {
           return (

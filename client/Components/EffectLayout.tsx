@@ -5,7 +5,7 @@ import InteractionLayout from "./InteractionLayout/InteractionLayout";
 
 const EffectLayout = (props: EffectType) => {
   return (
-    <InteractionLayout>
+    <InteractionLayout type="effect">
       {props.effect || (
         <Effect
           effect={"http://localhost:3000/effects/" + props.effectName + ".gif"}
