@@ -1,24 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ChannelData } from "../types/chatProps.type";
-
-const TRIGGERS = [
-  {
-    keyword: "차태경",
-    eventName: "차태경",
-  },
-  {
-    keyword: "유저",
-    eventName: "차태경",
-  },
-  {
-    keyword: "사출",
-    eventName: "사출",
-  },
-  {
-    keyword: "이벤트",
-    eventName: "사출",
-  },
-];
+import { TRIGGERS } from "../constants/constants";
 
 interface Message {
   chatId: string;
@@ -29,23 +11,26 @@ interface Message {
 
 const useChat = (props: { channelData: ChannelData }) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const { channelData } = props;
 
   const messageParser = useCallback((messageList: any) => {
-    return messageList.map((msg: any) => {
+    return messageList.map((message: any) => {
+      const { msg, extras, profile, uid, utime } = message;
+
       TRIGGERS.map(({ keyword, eventName }) => {
-        if (msg.msg.includes(keyword)) {
+        if (msg.includes(keyword)) {
           const event: CustomEvent = new CustomEvent(eventName);
           window.dispatchEvent(event);
         }
       });
-      const emojis = JSON.parse(msg.extras).emojis;
-      const profile = JSON.parse(msg.profile);
+      const emojis = JSON.parse(extras).emojis;
+      const { nickname } = JSON.parse(profile);
 
       return {
-        nickname: profile.nickname,
-        msg: msg.msg,
+        nickname: nickname,
+        msg: msg,
         emojis: emojis,
-        chatId: msg.uid + msg.utime,
+        chatId: uid + utime,
       };
     });
   }, []);
@@ -58,11 +43,11 @@ const useChat = (props: { channelData: ChannelData }) => {
           ver: "2",
           cmd: 100,
           svcid: "game",
-          cid: props.channelData.channelId,
+          cid: channelData.channelId,
           bdy: {
-            uid: props.channelData.uid,
+            uid: channelData.uid,
             devType: 2001,
-            accTkn: props.channelData.accessToken,
+            accTkn: channelData.accessToken,
             auth: "READ",
           },
           tid: "1",
@@ -104,7 +89,7 @@ const useChat = (props: { channelData: ChannelData }) => {
           ws.send(
             JSON.stringify({
               sid: msg.bdy.sid,
-              cid: props.channelData.channelId,
+              cid: channelData.channelId,
               svcid: msg.svcid,
               ver: "2",
               cmd: 5101,
