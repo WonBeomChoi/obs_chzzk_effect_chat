@@ -1,25 +1,43 @@
+// H : horizon
+// V : Vertical
 type Direction = {
   V?: string;
   H?: string;
 };
 
+type onDragType = (
+  deltaX: number,
+  deltaY: number,
+  deltaWidth: number,
+  deltaHeight: number
+) => void;
+
 export function registMouseDownDrag(
-  onDragChange: (dx: number, dy: number, dw: number, dh: number) => void,
+  onDragChange: onDragType,
   direction: Direction,
   behavior: "move" | "resize" = "resize"
 ) {
   return (clickEvent: React.MouseEvent<Element, MouseEvent>) => {
     clickEvent.stopPropagation();
+
     const mouseMoveHandler = (moveEvent: MouseEvent) => {
-      // 이동위치 - 클릭위치
+      // delta = 마우스 이동 위치 - 클릭 위치
+      // H : horizon
+      // V : Vertical
       const deltaH = moveEvent.pageX - clickEvent.pageX;
       const deltaV = moveEvent.pageY - clickEvent.pageY;
+
+      // 동작 분기 처리
       if (behavior === "move") {
         onDragChange(deltaH, deltaV, 0, 0);
       } else if (behavior === "resize") {
-        const { dx, dy, dw, dh } = getDelta(deltaH, deltaV, direction);
+        const { deltaX, deltaY, deltaWidth, deltaHeight } = getDelta(
+          deltaH,
+          deltaV,
+          direction
+        );
 
-        onDragChange(dx, dy, dw, dh);
+        onDragChange(deltaX, deltaY, deltaWidth, deltaHeight);
       }
     };
 
@@ -33,32 +51,28 @@ export function registMouseDownDrag(
 }
 
 function getDelta(deltaH: number, deltaV: number, direction: Direction) {
-  let dx = 0,
-    dy = 0,
-    dw = 0,
-    dh = 0;
-
   const { V, H } = direction;
 
-  switch (H) {
-    case "W":
-      dx = deltaH;
-      dw = -deltaH;
-      break;
-    case "E":
-      dw = deltaH;
-      break;
+  const delta = {
+    deltaX: 0,
+    deltaY: 0,
+    deltaWidth: 0,
+    deltaHeight: 0,
+  };
+
+  if (H === "W") {
+    delta.deltaX = deltaH;
+    delta.deltaWidth = -deltaH;
+  } else if (H === "E") {
+    delta.deltaWidth = deltaH;
   }
 
-  switch (V) {
-    case "N":
-      dy = deltaV;
-      dh = -deltaV;
-      break;
-    case "S":
-      dh = deltaV;
-      break;
+  if (V === "N") {
+    delta.deltaY = deltaV;
+    delta.deltaHeight = -deltaV;
+  } else if (V === "S") {
+    delta.deltaHeight = deltaV;
   }
 
-  return { dx, dy, dw, dh };
+  return delta;
 }
