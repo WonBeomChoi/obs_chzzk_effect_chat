@@ -1,4 +1,4 @@
-export const CONFIG = {
+export const DEFAULT_CONFIG = {
   chat: {
     x: 0,
     y: 0,
