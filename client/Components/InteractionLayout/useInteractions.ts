@@ -14,6 +14,7 @@ export function useInteractions(type: "chat" | "effect") {
     setData,
   } = useConfigValues()[type];
 
+  // move
   const handleMove: ChangeHandler = (deltaX, deltaY) => {
     setData((prev) => ({
       ...prev,
@@ -22,6 +23,7 @@ export function useInteractions(type: "chat" | "effect") {
     }));
   };
 
+  // resize
   const handleResize: ChangeHandler = (
     deltaX,
     deltaY,
