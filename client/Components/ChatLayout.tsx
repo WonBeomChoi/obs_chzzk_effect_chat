@@ -26,6 +26,8 @@ const Nickname = styled.span`
   font-weight: bold;
   margin-right: 10px;
   color: #ff6b6b;
+  // 닉네임 줄바꿈 방지
+  white-space: nowrap;
 `;
 const Container = styled.div`
   display: flex;
