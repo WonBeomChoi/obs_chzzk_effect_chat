@@ -34,8 +34,8 @@ export function useInteractions(type: "chat" | "effect") {
       ...prev,
       x: Math.min(x + deltaX, x + width - MIN_WIDTH),
       y: Math.min(y + deltaY, y + height - MIN_HEIGHT),
-      width: Math.max(MIN_WIDTH, width + deltaWidth!),
-      height: Math.max(MIN_HEIGHT, height + deltaHeight!),
+      width: Math.max(width + deltaWidth!, MIN_WIDTH),
+      height: Math.max(height + deltaHeight!, MIN_HEIGHT),
     }));
   };
 

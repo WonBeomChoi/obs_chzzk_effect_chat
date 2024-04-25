@@ -22,16 +22,13 @@ export function registMouseDownDrag(
       if (behavior === "move") {
         onDragChange(deltaH, deltaV, 0, 0);
       } else if (behavior === "resize") {
-        const { deltaX, deltaY, deltaWidth, deltaHeight } = getDelta(
-          deltaH,
-          deltaV,
-          direction
-        );
+        const delta = getDelta(deltaH, deltaV, direction);
 
-        onDragChange(deltaX, deltaY, deltaWidth, deltaHeight);
+        onDragChange(delta.x, delta.y, delta.width, delta.height);
       }
     };
 
+    // mouse up 시에 mouse move 핸들러 제거
     const mouseUpHandler = () => {
       document.removeEventListener("mousemove", mouseMoveHandler);
     };
@@ -45,24 +42,24 @@ function getDelta(deltaH: number, deltaV: number, direction: Direction) {
   const { V, H } = direction;
 
   const delta = {
-    deltaX: 0,
-    deltaY: 0,
-    deltaWidth: 0,
-    deltaHeight: 0,
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
 
   if (H === "W") {
-    delta.deltaX = deltaH;
-    delta.deltaWidth = -deltaH;
+    delta.x = deltaH;
+    delta.width = -deltaH;
   } else if (H === "E") {
-    delta.deltaWidth = deltaH;
+    delta.width = deltaH;
   }
 
   if (V === "N") {
-    delta.deltaY = deltaV;
-    delta.deltaHeight = -deltaV;
+    delta.y = deltaV;
+    delta.height = -deltaV;
   } else if (V === "S") {
-    delta.deltaHeight = deltaV;
+    delta.height = deltaV;
   }
 
   return delta;
