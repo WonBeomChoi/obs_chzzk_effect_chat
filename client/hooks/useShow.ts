@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 export function useShow() {
-  const [showChat, setShowChat] = useState<boolean>(false);
-  const [showEffect, setShowEffect] = useState<boolean>(false);
+  const [showChat, setShowChat] = useState(true);
+  const [showEffect, setShowEffect] = useState(true);
 
   useEffect(() => {
     const handleShowState: (e: KeyboardEvent) => any = (e) => {

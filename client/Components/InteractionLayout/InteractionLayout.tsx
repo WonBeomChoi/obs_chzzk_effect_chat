@@ -7,7 +7,7 @@ import { InteractionLayoutProps } from "./type";
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
   const { x, y, width, height, handleMove, handleResize } =
     useInteractions(type);
-  const [onSetting, setOnSetting] = useState(false);
+  const [onSetting, setOnSetting] = useState(true);
 
   // 이벤트 잠금
   useEffect(() => {
