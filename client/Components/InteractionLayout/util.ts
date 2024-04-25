@@ -5,6 +5,9 @@ export function registMouseDownDrag(
   direction: Direction,
   behavior: "move" | "resize" = "resize"
 ) {
+  // React.MouseEvent<T,U>
+  // T : 이벤트가 발생한 요소의 타입
+  // U : 이벤트 타입
   return (clickEvent: React.MouseEvent<Element, MouseEvent>) => {
     clickEvent.stopPropagation();
 

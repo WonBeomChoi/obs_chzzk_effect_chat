@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { registMouseDownDrag } from "./util";
-import { useInteractions } from "./hooks";
+import { useInteractions } from "./useInteractions";
 import { InteractionLayoutProps } from "./type";
 
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
