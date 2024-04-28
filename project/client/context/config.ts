@@ -1,25 +1,29 @@
 import { Dispatch, SetStateAction, createContext } from 'react';
 
-export interface IConfig {
+export interface LayoutConfig {
   x: number;
   y: number;
   width: number;
   height: number;
-  MIN_WIDTH: number;
-  MIN_HEIGHT: number;
 }
 
-interface IConfigGeneric<T> {
-  chat: T;
-  effect: T;
+interface StateGeneric<T> {
+  state: T;
+  setState: Dispatch<SetStateAction<T>>;
 }
 
-interface IConfigData {
-  data: IConfig;
-  setData: Dispatch<SetStateAction<IConfig>>;
-}
+export type AppConfigs = {
+  chat: LayoutConfig;
+  effect: LayoutConfig;
+  onSetting: boolean;
+};
 
-export type Configs = IConfigGeneric<IConfig>;
-type ContextValues = IConfigGeneric<IConfigData>;
+type LayoutState = StateGeneric<LayoutConfig>;
+type onSettingState = StateGeneric<boolean>;
+type ContextValues = {
+  chat: LayoutState;
+  effect: LayoutState;
+  onSetting: onSettingState;
+};
 
 export const ConfigContext = createContext<ContextValues | undefined>(undefined);

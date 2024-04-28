@@ -4,17 +4,14 @@ export const DEFAULT_CONFIG = {
     y: 0,
     width: 300,
     height: 500,
-    MIN_WIDTH: 100,
-    MIN_HEIGHT: 100,
   },
   effect: {
     x: 500,
     y: 0,
     width: 300,
     height: 300,
-    MIN_WIDTH: 100,
-    MIN_HEIGHT: 100,
   },
+  onSetting: true,
 };
 
 export const EFFECTS = [

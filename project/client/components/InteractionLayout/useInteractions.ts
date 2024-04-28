@@ -2,6 +2,17 @@ import { useContext } from 'react';
 import { ConfigContext } from '../../context/config';
 import { ChangeHandler } from './type';
 
+const MIN = {
+  chat: {
+    width: 100,
+    height: 100,
+  },
+  effect: {
+    width: 100,
+    height: 100,
+  },
+};
+
 function useConfigValues() {
   const values = useContext(ConfigContext);
   if (!values) throw new Error('context api error');
@@ -10,27 +21,37 @@ function useConfigValues() {
 
 export function useInteractions(type: 'chat' | 'effect') {
   const {
-    data: { x, y, width, height, MIN_WIDTH, MIN_HEIGHT },
-    setData,
+    state: { x, y, width, height },
+    setState,
   } = useConfigValues()[type];
+
+  const { width: MIN_WIDTH, height: MIN_HEIGHT } = MIN[type];
 
   // move
   const handleMove: ChangeHandler = (deltaX, deltaY) => {
-    setData((prev) => ({
+    const newX = x + deltaX;
+    const newY = x + deltaY;
+
+    setState((prev) => ({
       ...prev,
-      x: x + deltaX,
-      y: y + deltaY,
+      x: newX,
+      y: newY,
     }));
   };
 
   // resize
   const handleResize: ChangeHandler = (deltaX, deltaY, deltaWidth, deltaHeight) => {
-    setData((prev) => ({
+    const newX = Math.min(x + deltaX, x + width - MIN_WIDTH);
+    const newY = Math.min(y + deltaY, y + height - MIN_HEIGHT);
+    const newWidth = Math.max(width + deltaWidth!, MIN_WIDTH);
+    const newHeight = Math.max(height + deltaHeight!, MIN_HEIGHT);
+
+    setState((prev) => ({
       ...prev,
-      x: Math.min(x + deltaX, x + width - MIN_WIDTH),
-      y: Math.min(y + deltaY, y + height - MIN_HEIGHT),
-      width: Math.max(width + deltaWidth!, MIN_WIDTH),
-      height: Math.max(height + deltaHeight!, MIN_HEIGHT),
+      x: newX,
+      y: newY,
+      width: newWidth,
+      height: newHeight,
     }));
   };
 
