@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import useChat from './hooks/useChat';
-import ChatLayout from './Components/ChatLayout';
+import ChatLayout from './components/ChatLayout';
 
 import { ChannelData } from './types/chatProps.type';
-import EffectLayout from './Components/EffectLayout';
+import EffectLayout from './components/EffectLayout';
 import { EffectType } from './types/effect.type';
 import styled from 'styled-components';
 import { ConfigContext } from './context/config';
