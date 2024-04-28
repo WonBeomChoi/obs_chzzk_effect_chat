@@ -10,6 +10,7 @@ import { ConfigContext } from './context/config';
 import { EFFECTS } from './constants/constants';
 import { useShow } from './hooks/useShow';
 import { useConfig } from './hooks/useConfig';
+import GlobalStyle from './styles/GlobalStyle';
 
 function App(props: ChannelData) {
   const [effect, setEffect] = useState<EffectType>({
@@ -35,17 +36,29 @@ function App(props: ChannelData) {
   const configStates = useConfig();
 
   return (
-    <ConfigContext.Provider value={configStates}>
-      <Container>
-        {showChat && <ChatLayout chatList={chatList} />}
-        {showEffect && <EffectLayout effect={effect.effect} effectName={effect.effectName} />}
-      </Container>
-    </ConfigContext.Provider>
+    <>
+      <GlobalStyle />
+      <ConfigContext.Provider value={configStates}>
+        {configStates.onSetting.state && <Border />}
+        <Container>
+          {showChat && <ChatLayout chatList={chatList} />}
+          {showEffect && <EffectLayout effect={effect.effect} effectName={effect.effectName} />}
+        </Container>
+      </ConfigContext.Provider>
+    </>
   );
 }
 
 const Container = styled.div`
   position: relative;
+`;
+
+const Border = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  border: 1px solid red;
+  box-sizing: border-box;
 `;
 
 export default App;
