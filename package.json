@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-server": "npm --prefix ./project run dev-server"
+    "dev-server": "pnpm --filter project dev-server",
+    "lint": "pnpm --filter project lint",
+    "prettier": "pnpm --filter project prettier"
   },
   "keywords": [],
   "author": "",
