@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Config } from '../context/config';
+import { IConfig } from '../context/config';
 import { DEFAULT_CONFIG } from '../constants/constants';
 import { getConfig, setConfig } from '../utils/storage';
 
 export function useConfig() {
   // chat config : 채팅 레이아웃 세팅값
   // effect config : 이펙트 레이아웃 세팅값
-  const [chatConfig, setChatConfig] = useState<Config>(DEFAULT_CONFIG.chat);
-  const [effectConfig, setEffectConfig] = useState<Config>(DEFAULT_CONFIG.effect);
+  const [chatConfig, setChatConfig] = useState<IConfig>(DEFAULT_CONFIG.chat);
+  const [effectConfig, setEffectConfig] = useState<IConfig>(DEFAULT_CONFIG.effect);
 
   // 초기 세팅값 불러오기
   useEffect(() => {

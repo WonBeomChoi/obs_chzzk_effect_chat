@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext } from 'react';
 
-export interface Config {
+export interface IConfig {
   x: number;
   y: number;
   width: number;
@@ -9,14 +9,17 @@ export interface Config {
   MIN_HEIGHT: number;
 }
 
-interface ConfigData {
-  data: Config;
-  setData: Dispatch<SetStateAction<Config>>;
+interface IConfigGeneric<T> {
+  chat: T;
+  effect: T;
 }
 
-interface ContextValues {
-  chat: ConfigData;
-  effect: ConfigData;
+interface IConfigData {
+  data: IConfig;
+  setData: Dispatch<SetStateAction<IConfig>>;
 }
+
+export type Configs = IConfigGeneric<IConfig>;
+type ContextValues = IConfigGeneric<IConfigData>;
 
 export const ConfigContext = createContext<ContextValues | undefined>(undefined);

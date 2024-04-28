@@ -1,8 +1,11 @@
 import { DEFAULT_CONFIG } from '../constants/constants';
+import { Configs } from '../context/config';
+
+type GetConfigs = () => Configs;
 
 // get localStorage
 // useEffect 내부에서 사용
-export const getConfig = () => {
+export const getConfig: GetConfigs = () => {
   const config = localStorage.getItem('obs_chzzk');
   try {
     if (!config) {
