@@ -23,8 +23,7 @@ export function useInteractions(type: 'chat' | 'effect') {
   // move
   const handleMove: ChangeHandler = (deltaX, deltaY) => {
     const newX = x + deltaX;
-    const newY = x + deltaY;
-
+    const newY = y + deltaY;
     setState((prev) => ({
       ...prev,
       x: newX,
@@ -38,7 +37,6 @@ export function useInteractions(type: 'chat' | 'effect') {
     const newY = Math.min(y + deltaY, y + height - MIN_HEIGHT);
     const newWidth = Math.max(width + deltaWidth!, MIN_WIDTH);
     const newHeight = Math.max(height + deltaHeight!, MIN_HEIGHT);
-
     setState((prev) => ({
       ...prev,
       x: newX,
