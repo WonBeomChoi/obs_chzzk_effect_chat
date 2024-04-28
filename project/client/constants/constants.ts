@@ -18,25 +18,25 @@ export const DEFAULT_CONFIG = {
 };
 
 export const EFFECTS = [
-  { keyword: "차태경", url: "이지툰", runningTime: 2000 },
-  { keyword: "사출", url: "사출", runningTime: 3000 },
+  { keyword: '차태경', url: '이지툰', runningTime: 2000 },
+  { keyword: '사출', url: '사출', runningTime: 3000 },
 ];
 
 export const TRIGGERS = [
   {
-    keyword: "차태경",
-    eventName: "차태경",
+    keyword: '차태경',
+    eventName: '차태경',
   },
   {
-    keyword: "유저",
-    eventName: "차태경",
+    keyword: '유저',
+    eventName: '차태경',
   },
   {
-    keyword: "사출",
-    eventName: "사출",
+    keyword: '사출',
+    eventName: '사출',
   },
   {
-    keyword: "이벤트",
-    eventName: "사출",
+    keyword: '이벤트',
+    eventName: '사출',
   },
 ];

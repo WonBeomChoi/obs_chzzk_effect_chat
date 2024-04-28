@@ -1,9 +1,9 @@
-import { ChangeHandler, Direction } from "./type";
+import { ChangeHandler, Direction } from './type';
 
 export function registMouseDownDrag(
   onDragChange: ChangeHandler,
   direction: Direction,
-  behavior: "move" | "resize" = "resize"
+  behavior: 'move' | 'resize' = 'resize',
 ) {
   // React.MouseEvent<T,U>
   // T : 이벤트가 발생한 요소의 타입
@@ -19,9 +19,9 @@ export function registMouseDownDrag(
       const deltaV = moveEvent.pageY - clickEvent.pageY;
 
       // 동작 분기 처리
-      if (behavior === "move") {
+      if (behavior === 'move') {
         onDragChange(deltaH, deltaV, 0, 0);
-      } else if (behavior === "resize") {
+      } else if (behavior === 'resize') {
         const delta = getDelta(deltaH, deltaV, direction);
 
         onDragChange(delta.x, delta.y, delta.width, delta.height);
@@ -30,11 +30,11 @@ export function registMouseDownDrag(
 
     // mouse up 시에 mouse move 핸들러 제거
     const mouseUpHandler = () => {
-      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener('mousemove', mouseMoveHandler);
     };
 
-    document.addEventListener("mousemove", mouseMoveHandler);
-    document.addEventListener("mouseup", mouseUpHandler, { once: true });
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler, { once: true });
   };
 }
 
@@ -48,17 +48,17 @@ function getDelta(deltaH: number, deltaV: number, direction: Direction) {
     height: 0,
   };
 
-  if (H === "W") {
+  if (H === 'W') {
     delta.x = deltaH;
     delta.width = -deltaH;
-  } else if (H === "E") {
+  } else if (H === 'E') {
     delta.width = deltaH;
   }
 
-  if (V === "N") {
+  if (V === 'N') {
     delta.y = deltaV;
     delta.height = -deltaV;
-  } else if (V === "S") {
+  } else if (V === 'S') {
     delta.height = deltaV;
   }
 

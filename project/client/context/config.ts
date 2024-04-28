@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext } from "react";
+import { Dispatch, SetStateAction, createContext } from 'react';
 
 export interface Config {
   x: number;
@@ -19,6 +19,4 @@ interface ContextValues {
   effect: ConfigData;
 }
 
-export const ConfigContext = createContext<ContextValues | undefined>(
-  undefined
-);
+export const ConfigContext = createContext<ContextValues | undefined>(undefined);

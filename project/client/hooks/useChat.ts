@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { ChannelData } from "../types/chatProps.type";
-import { TRIGGERS } from "../constants/constants";
+import { useState, useEffect, useCallback } from 'react';
+import { ChannelData } from '../types/chatProps.type';
+import { TRIGGERS } from '../constants/constants';
 
 interface Message {
   chatId: string;
@@ -36,22 +36,22 @@ const useChat = (props: { channelData: ChannelData }) => {
   }, []);
 
   useEffect(() => {
-    const ws = new WebSocket("wss://kr-ss1.chat.naver.com/chat");
+    const ws = new WebSocket('wss://kr-ss1.chat.naver.com/chat');
     ws.onopen = () => {
       ws.send(
         JSON.stringify({
-          ver: "2",
+          ver: '2',
           cmd: 100,
-          svcid: "game",
+          svcid: 'game',
           cid: channelData.channelId,
           bdy: {
             uid: channelData.uid,
             devType: 2001,
             accTkn: channelData.accessToken,
-            auth: "READ",
+            auth: 'READ',
           },
-          tid: "1",
-        })
+          tid: '1',
+        }),
       );
     };
 
@@ -60,7 +60,7 @@ const useChat = (props: { channelData: ChannelData }) => {
         JSON.stringify({
           ver: 2,
           cmd: 0,
-        })
+        }),
       );
     }, 10000);
     ws.onmessage = (message) => {
@@ -72,7 +72,7 @@ const useChat = (props: { channelData: ChannelData }) => {
           JSON.stringify({
             ver: 2,
             cmd: 0,
-          })
+          }),
         );
       }, 10000);
 
@@ -82,7 +82,7 @@ const useChat = (props: { channelData: ChannelData }) => {
             JSON.stringify({
               ver: 2,
               cmd: 10000,
-            })
+            }),
           );
           break;
         case 10100: //연결된거 확인
@@ -91,13 +91,13 @@ const useChat = (props: { channelData: ChannelData }) => {
               sid: msg.bdy.sid,
               cid: channelData.channelId,
               svcid: msg.svcid,
-              ver: "2",
+              ver: '2',
               cmd: 5101,
               bdy: {
                 recentMessageCount: 50,
               },
               tid: +msg.tid + 1,
-            })
+            }),
           );
           break;
         // case문에 or 연산 추가는?
@@ -120,6 +120,7 @@ const useChat = (props: { channelData: ChannelData }) => {
             }
             return messages;
           });
+          break;
         default:
           break;
       }

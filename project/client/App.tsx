@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import useChat from "./hooks/useChat";
-import ChatLayout from "./Components/ChatLayout";
+import React, { useEffect, useState } from 'react';
+import useChat from './hooks/useChat';
+import ChatLayout from './Components/ChatLayout';
 
-import { ChannelData } from "./types/chatProps.type";
-import EffectLayout from "./Components/EffectLayout";
-import { EffectType } from "./types/effect.type";
-import styled from "styled-components";
-import { ConfigContext } from "./context/config";
-import { EFFECTS } from "./constants/constants";
-import { useShow } from "./hooks/useShow";
-import { useConfig } from "./hooks/useConfig";
+import { ChannelData } from './types/chatProps.type';
+import EffectLayout from './Components/EffectLayout';
+import { EffectType } from './types/effect.type';
+import styled from 'styled-components';
+import { ConfigContext } from './context/config';
+import { EFFECTS } from './constants/constants';
+import { useShow } from './hooks/useShow';
+import { useConfig } from './hooks/useConfig';
 
 function App(props: ChannelData) {
   const [effect, setEffect] = useState<EffectType>({
     effect: true,
-    effectName: "",
+    effectName: '',
   });
   useEffect(() => {
     EFFECTS.forEach(({ keyword, url, runningTime }) => {
@@ -22,7 +22,7 @@ function App(props: ChannelData) {
         if (effect) {
           setEffect({ effect: false, effectName: url });
           setTimeout(() => {
-            setEffect({ effect: true, effectName: "" });
+            setEffect({ effect: true, effectName: '' });
           }, runningTime);
         }
       });
@@ -38,9 +38,7 @@ function App(props: ChannelData) {
     <ConfigContext.Provider value={configStates}>
       <Container>
         {showChat && <ChatLayout chatList={chatList} />}
-        {showEffect && (
-          <EffectLayout effect={effect.effect} effectName={effect.effectName} />
-        )}
+        {showEffect && <EffectLayout effect={effect.effect} effectName={effect.effectName} />}
       </Container>
     </ConfigContext.Provider>
   );

@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { ChannelData } from "../types/chatProps.type";
-import useChat from "../hooks/useChat";
-import styled from "styled-components";
-import InteractionLayout from "./InteractionLayout/InteractionLayout";
+import React, { useEffect } from 'react';
+import { ChannelData } from '../types/chatProps.type';
+import useChat from '../hooks/useChat';
+import styled from 'styled-components';
+import InteractionLayout from './InteractionLayout/InteractionLayout';
 
 const ChatLayout = (props: { chatList: { messages: any[] } }) => {
   const { chatList } = props;

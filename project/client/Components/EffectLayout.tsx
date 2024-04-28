@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { EffectType } from "../types/effect.type";
-import InteractionLayout from "./InteractionLayout/InteractionLayout";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { EffectType } from '../types/effect.type';
+import InteractionLayout from './InteractionLayout/InteractionLayout';
 
 const EffectLayout = (props: EffectType) => {
   return (
     <InteractionLayout type="effect">
       {props.effect || (
-        <Effect
-          effect={"http://localhost:3000/effects/" + props.effectName + ".gif"}
-        />
+        <Effect effect={'http://localhost:3000/effects/' + props.effectName + '.gif'} />
       )}
     </InteractionLayout>
   );

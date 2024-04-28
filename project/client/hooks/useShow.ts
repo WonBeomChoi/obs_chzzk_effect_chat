@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 /** ctrl
  * q : 채팅  on off
@@ -17,21 +17,21 @@ export function useShow() {
       const { ctrlKey, key } = e;
       if (ctrlKey) {
         switch (key) {
-          case "q":
-          case "ㅂ":
+          case 'q':
+          case 'ㅂ':
             setShowChat((prev) => !prev);
             break;
-          case "w":
-          case "ㅈ":
+          case 'w':
+          case 'ㅈ':
             setShowEffect((prev) => !prev);
             break;
-          case "e":
-          case "ㄷ":
+          case 'e':
+          case 'ㄷ':
             setShowChat(true);
             setShowEffect(true);
             break;
-          case "r":
-          case "ㄱ":
+          case 'r':
+          case 'ㄱ':
             setShowChat(false);
             setShowEffect(false);
             break;
@@ -39,9 +39,9 @@ export function useShow() {
       }
     };
 
-    document.addEventListener("keydown", handleShowState);
+    document.addEventListener('keydown', handleShowState);
     return () => {
-      document.removeEventListener("keydown", handleShowState);
+      document.removeEventListener('keydown', handleShowState);
     };
   }, []);
 
