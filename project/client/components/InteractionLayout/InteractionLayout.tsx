@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { registMouseDownDrag } from './util';
 import { useInteractions } from './useInteractions';
 import { InteractionLayoutProps } from './type';
+import { useConfig } from '../../hooks/useConfig';
 
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
   const { x, y, width, height, handleMove, handleResize } = useInteractions(type);
-  const [onSetting, setOnSetting] = useState(true);
 
-  // 이벤트 잠금
-  useEffect(() => {
-    window.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && (e.key === 'k' || e.key === 'ㅏ')) {
-        setOnSetting((prev) => !prev);
-      }
-    });
-  }, []);
+  const { onSetting } = useConfig();
 
   return (
     <Layout
@@ -24,9 +17,9 @@ function InteractionLayout({ children, type }: InteractionLayoutProps) {
         width: width,
         height: height,
       }}
-      onMouseDown={onSetting ? registMouseDownDrag(handleMove, {}, 'move') : undefined}
+      onMouseDown={onSetting.state ? registMouseDownDrag(handleMove, {}, 'move') : undefined}
     >
-      {onSetting && (
+      {onSetting.state && (
         <>
           <N onMouseDown={registMouseDownDrag(handleResize, { V: 'N' })} />
           <S onMouseDown={registMouseDownDrag(handleResize, { V: 'S' })} />

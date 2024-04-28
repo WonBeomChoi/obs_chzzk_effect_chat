@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import { IConfig } from '../context/config';
+import { LayoutConfig } from '../context/config';
 import { DEFAULT_CONFIG } from '../constants/constants';
 import { getConfig, setConfig } from '../utils/storage';
 
 export function useConfig() {
   // chat config : 채팅 레이아웃 세팅값
   // effect config : 이펙트 레이아웃 세팅값
-  const [chatConfig, setChatConfig] = useState<IConfig>(DEFAULT_CONFIG.chat);
-  const [effectConfig, setEffectConfig] = useState<IConfig>(DEFAULT_CONFIG.effect);
+  const [chatConfig, setChatConfig] = useState<LayoutConfig>(DEFAULT_CONFIG.chat);
+  const [effectConfig, setEffectConfig] = useState<LayoutConfig>(DEFAULT_CONFIG.effect);
+  const [onSetting, setOnSetting] = useState(DEFAULT_CONFIG.onSetting);
 
   // 초기 세팅값 불러오기
   useEffect(() => {
@@ -15,6 +16,7 @@ export function useConfig() {
 
     setChatConfig(CONFIG.chat);
     setEffectConfig(CONFIG.effect);
+    setOnSetting(CONFIG.onSetting);
   }, []);
 
   // mouse up 시 저장
@@ -34,19 +36,37 @@ export function useConfig() {
     };
   }, [chatConfig, effectConfig]);
 
+  // 이벤트 잠금
+  useEffect(() => {
+    window.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && (e.key === 'k' || e.key === 'ㅏ')) {
+        setOnSetting((prev) => {
+          setConfig({
+            onSetting: !prev,
+          });
+          return !prev;
+        });
+      }
+    });
+  }, []);
+
   // 리렌더링시 불필요하게 재생성 되는 일 방지
   const contextValue = useMemo(
     () => ({
       chat: {
-        data: chatConfig,
-        setData: setChatConfig,
+        state: chatConfig,
+        setState: setChatConfig,
       },
       effect: {
-        data: effectConfig,
-        setData: setEffectConfig,
+        state: effectConfig,
+        setState: setEffectConfig,
+      },
+      onSetting: {
+        state: onSetting,
+        setState: setOnSetting,
       },
     }),
-    [chatConfig, effectConfig],
+    [chatConfig, effectConfig, onSetting, setChatConfig, setEffectConfig, setOnSetting],
   );
 
   return contextValue;
