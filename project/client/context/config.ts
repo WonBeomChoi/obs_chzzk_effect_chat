@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext } from 'react';
+import { Dispatch, SetStateAction, createContext, useContext } from 'react';
 
 export interface LayoutConfig {
   x: number;
@@ -27,3 +27,9 @@ type ContextValues = {
 };
 
 export const ConfigContext = createContext<ContextValues | undefined>(undefined);
+
+export function useConfigValues() {
+  const values = useContext(ConfigContext);
+  if (!values) throw new Error('context api error');
+  return values;
+}

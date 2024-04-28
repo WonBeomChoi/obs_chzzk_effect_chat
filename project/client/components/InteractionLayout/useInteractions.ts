@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { ConfigContext } from '../../context/config';
+import { useConfigValues } from '../../context/config';
 import { ChangeHandler } from './type';
 
 const MIN = {
@@ -12,12 +11,6 @@ const MIN = {
     height: 100,
   },
 };
-
-function useConfigValues() {
-  const values = useContext(ConfigContext);
-  if (!values) throw new Error('context api error');
-  return values;
-}
 
 export function useInteractions(type: 'chat' | 'effect') {
   const {
