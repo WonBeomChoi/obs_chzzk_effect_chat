@@ -7,7 +7,7 @@ import EffectLayout from './components/EffectLayout';
 import { EffectType } from './types/effect.type';
 import styled from 'styled-components';
 import { ConfigContext } from './context/config';
-import { EFFECTS } from './constants/constants';
+import { DEFAULT_CONFIG, EFFECTS } from './constants/constants';
 import { useShow } from './hooks/useShow';
 import { useConfig } from './hooks/useConfig';
 import GlobalStyle from './styles/GlobalStyle';
@@ -39,7 +39,18 @@ function App(props: ChannelData) {
     <>
       <GlobalStyle />
       <ConfigContext.Provider value={configStates}>
-        {configStates.onSetting.state && <Border />}
+        {configStates.onSetting.state && (
+          <SettingsContainer>
+            <button
+              onClick={() => {
+                configStates.chat.setState(DEFAULT_CONFIG.chat);
+                configStates.effect.setState(DEFAULT_CONFIG.effect);
+              }}
+            >
+              설정 초기화
+            </button>
+          </SettingsContainer>
+        )}
         <Container>
           {showChat && <ChatLayout chatList={chatList} />}
           {showEffect && <EffectLayout effect={effect.effect} effectName={effect.effectName} />}
@@ -53,7 +64,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Border = styled.div`
+const SettingsContainer = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
