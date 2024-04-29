@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useConfigValues } from '../context/config';
-import { setConfig } from '../utils/storage';
+import { updateConfig } from '../utils/storage';
 
 function useSaveLayoutConfig(type: 'chat' | 'effect') {
   const { states } = useConfigValues();
@@ -13,7 +13,7 @@ function useSaveLayoutConfig(type: 'chat' | 'effect') {
         [type]: config,
       };
 
-      setConfig(newConfig);
+      updateConfig(newConfig);
     };
 
     window.addEventListener('mouseup', handler);

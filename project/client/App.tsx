@@ -11,6 +11,7 @@ import { DEFAULT_CONFIG, EFFECTS } from './constants/constants';
 import { useShow } from './hooks/useShow';
 import { useConfig } from './hooks/useConfig';
 import GlobalStyle from './styles/GlobalStyle';
+import useSaveOnSetting from './hooks/useSaveOnSetting';
 
 function App(props: ChannelData) {
   const [effect, setEffect] = useState<EffectType>({
@@ -39,6 +40,8 @@ function App(props: ChannelData) {
     states: { onSetting },
     setStates,
   } = configStates;
+
+  useSaveOnSetting(setStates.onSetting);
 
   return (
     <>

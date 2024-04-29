@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { LayoutConfig } from '../context/config';
 import { DEFAULT_CONFIG } from '../constants/constants';
-import { getConfig, setConfig } from '../utils/storage';
+import { getConfig } from '../utils/storage';
 
 export function useConfig() {
   // chat config : 채팅 레이아웃 세팅값
@@ -17,25 +17,6 @@ export function useConfig() {
     setChatConfig(chat);
     setEffectConfig(effect);
     setOnSetting(onSetting);
-  }, []);
-
-  // 이벤트 잠금
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.ctrlKey && (e.key === 'k' || e.key === 'ㅏ')) {
-        setOnSetting((prev) => {
-          setConfig({
-            onSetting: !prev,
-          });
-          return !prev;
-        });
-      }
-    };
-
-    window.addEventListener('keydown', handler);
-    return () => {
-      window.removeEventListener('keydown', handler);
-    };
   }, []);
 
   // 리렌더링시 불필요하게 재생성 되는 일 방지
