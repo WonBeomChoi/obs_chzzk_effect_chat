@@ -1,3 +1,3 @@
-type EffectType = { effect: boolean; effectName: string };
+type EffectType = { effect: boolean; effectUrl: string };
 
 export type { EffectType };

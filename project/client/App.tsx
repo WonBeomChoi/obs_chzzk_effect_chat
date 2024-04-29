@@ -16,24 +16,23 @@ import useSaveOnSetting from './hooks/useSaveOnSetting';
 function App(props: ChannelData) {
   const [effect, setEffect] = useState<EffectType>({
     effect: true,
-    effectName: '',
+    effectUrl: '',
   });
   useEffect(() => {
-    EFFECTS.forEach(({ keyword, url, runningTime }) => {
-      window.addEventListener(keyword, () => {
+    EFFECTS.forEach(({ eventName, url, runningTime }) => {
+      window.addEventListener(eventName, () => {
         if (effect) {
-          setEffect({ effect: false, effectName: url });
+          setEffect({ effect: false, effectUrl: url });
           setTimeout(() => {
-            setEffect({ effect: true, effectName: '' });
+            setEffect({ effect: true, effectUrl: '' });
           }, runningTime);
         }
       });
     });
   }, []);
 
-  const { showChat, showEffect } = useShow();
   const chatList = useChat({ channelData: props });
-
+  const { showChat, showEffect } = useShow();
   const configStates = useConfig();
 
   const {
@@ -61,7 +60,7 @@ function App(props: ChannelData) {
         )}
         <Container>
           {showChat && <ChatLayout chatList={chatList} />}
-          {showEffect && <EffectLayout effect={effect.effect} effectName={effect.effectName} />}
+          {showEffect && <EffectLayout effect={effect.effect} effectUrl={effect.effectUrl} />}
         </Container>
       </ConfigContext.Provider>
     </>

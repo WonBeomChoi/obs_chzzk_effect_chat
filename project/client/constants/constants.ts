@@ -15,8 +15,8 @@ export const DEFAULT_CONFIG = {
 };
 
 export const EFFECTS = [
-  { keyword: '차태경', url: '이지툰', runningTime: 2000 },
-  { keyword: '사출', url: '사출', runningTime: 3000 },
+  { eventName: '차태경', url: 'http://localhost:3000/effects/이지툰.gif', runningTime: 2000 },
+  { eventName: '사출', url: 'http://localhost:3000/effects/사출.gif', runningTime: 3000 },
 ];
 
 export const TRIGGERS = [

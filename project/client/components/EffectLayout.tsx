@@ -7,9 +7,7 @@ import useSaveLayoutConfig from '../hooks/useSaveLayoutConfig';
 const EffectLayout = (props: EffectType) => {
   return (
     <InteractionLayout type="effect" saveCallback={useSaveLayoutConfig}>
-      {props.effect || (
-        <Effect effect={'http://localhost:3000/effects/' + props.effectName + '.gif'} />
-      )}
+      {props.effect || <Effect effect={props.effectUrl} />}
     </InteractionLayout>
   );
 };
