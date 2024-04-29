@@ -4,8 +4,8 @@ import fs from 'fs';
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom/server';
 import { ServerStyleSheet } from 'styled-components';
-
 import { ChannelData } from './client/types/chatProps.type';
 
 import App from './client/App';
@@ -51,7 +51,7 @@ app.get('/chat/:id', async (req: Request, res: Response) => {
     }
     const sheet = new ServerStyleSheet();
     const component = sheet.collectStyles(React.createElement(App, channelData));
-    const appString = renderToString(component);
+    const appString = renderToString(StaticRouter({ children: component, location: req.url }));
     const indexHtml = fs.readFileSync('./dist/client/index.html', 'utf8');
     const channelDataAtrribute = `data-user-id="${channelData.uid}" data-channel-id="${channelData.channelId}" data-access-token="${channelData.accessToken}"`;
     const renderedHtml = indexHtml.replace(
