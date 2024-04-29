@@ -3,12 +3,9 @@ import styled from 'styled-components';
 import { registMouseDownDrag } from './util';
 import { useInteractions } from './useInteractions';
 import { InteractionLayoutProps } from './type';
-import { useConfig } from '../../hooks/useConfig';
 
 function InteractionLayout({ children, type }: InteractionLayoutProps) {
-  const { x, y, width, height, handleMove, handleResize } = useInteractions(type);
-
-  const { onSetting } = useConfig();
+  const { x, y, width, height, handleMove, handleResize, onSetting } = useInteractions(type);
 
   const LayoutStyle = {
     transform: `translateX(${x}px) translateY(${y}px)`,
@@ -16,13 +13,11 @@ function InteractionLayout({ children, type }: InteractionLayoutProps) {
     height: height,
   };
 
-  const mouseDownHandler = onSetting.state
-    ? registMouseDownDrag(handleMove, {}, 'move')
-    : undefined;
+  const mouseDownHandler = onSetting ? registMouseDownDrag(handleMove, {}, 'move') : undefined;
 
   return (
     <Layout style={LayoutStyle} onMouseDown={mouseDownHandler}>
-      {onSetting.state && (
+      {onSetting && (
         <>
           <N onMouseDown={registMouseDownDrag(handleResize, { V: 'N' })} />
           <S onMouseDown={registMouseDownDrag(handleResize, { V: 'S' })} />

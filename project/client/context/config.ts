@@ -7,23 +7,23 @@ export interface LayoutConfig {
   height: number;
 }
 
-interface StateGeneric<T> {
-  state: T;
-  setState: Dispatch<SetStateAction<T>>;
-}
-
 export type AppConfigs = {
   chat: LayoutConfig;
   effect: LayoutConfig;
   onSetting: boolean;
 };
 
-type LayoutState = StateGeneric<LayoutConfig>;
-type onSettingState = StateGeneric<boolean>;
 type ContextValues = {
-  chat: LayoutState;
-  effect: LayoutState;
-  onSetting: onSettingState;
+  states: {
+    chat: LayoutConfig;
+    effect: LayoutConfig;
+    onSetting: boolean;
+  };
+  setStates: {
+    chat: Dispatch<SetStateAction<LayoutConfig>>;
+    effect: Dispatch<SetStateAction<LayoutConfig>>;
+    onSetting: Dispatch<SetStateAction<boolean>>;
+  };
 };
 
 export const ConfigContext = createContext<ContextValues | undefined>(undefined);

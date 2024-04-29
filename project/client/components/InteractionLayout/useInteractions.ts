@@ -13,10 +13,11 @@ const MIN = {
 };
 
 export function useInteractions(type: 'chat' | 'effect') {
-  const {
-    state: { x, y, width, height },
-    setState,
-  } = useConfigValues()[type];
+  const { states, setStates } = useConfigValues();
+  const { x, y, width, height } = states[type];
+  const setState = setStates[type];
+
+  const { onSetting } = states;
 
   const { width: MIN_WIDTH, height: MIN_HEIGHT } = MIN[type];
 
@@ -46,5 +47,5 @@ export function useInteractions(type: 'chat' | 'effect') {
     }));
   };
 
-  return { x, y, width, height, handleMove, handleResize };
+  return { x, y, width, height, handleMove, handleResize, onSetting };
 }

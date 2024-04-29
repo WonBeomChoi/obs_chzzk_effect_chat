@@ -51,23 +51,21 @@ export function useConfig() {
   }, []);
 
   // 리렌더링시 불필요하게 재생성 되는 일 방지
-  const contextValue = useMemo(
+  const contextValues = useMemo(
     () => ({
-      chat: {
-        state: chatConfig,
-        setState: setChatConfig,
+      states: {
+        chat: chatConfig,
+        effect: effectConfig,
+        onSetting: onSetting,
       },
-      effect: {
-        state: effectConfig,
-        setState: setEffectConfig,
-      },
-      onSetting: {
-        state: onSetting,
-        setState: setOnSetting,
+      setStates: {
+        chat: setChatConfig,
+        effect: setEffectConfig,
+        onSetting: setOnSetting,
       },
     }),
     [chatConfig, effectConfig, onSetting, setChatConfig, setEffectConfig, setOnSetting],
   );
 
-  return contextValue;
+  return contextValues;
 }

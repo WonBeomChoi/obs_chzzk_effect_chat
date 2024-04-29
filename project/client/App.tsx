@@ -35,16 +35,21 @@ function App(props: ChannelData) {
 
   const configStates = useConfig();
 
+  const {
+    states: { onSetting },
+    setStates,
+  } = configStates;
+
   return (
     <>
       <GlobalStyle />
       <ConfigContext.Provider value={configStates}>
-        {configStates.onSetting.state && (
+        {onSetting && (
           <SettingsContainer>
             <button
               onClick={() => {
-                configStates.chat.setState(DEFAULT_CONFIG.chat);
-                configStates.effect.setState(DEFAULT_CONFIG.effect);
+                setStates.chat(DEFAULT_CONFIG.chat);
+                setStates.effect(DEFAULT_CONFIG.effect);
               }}
             >
               설정 초기화
