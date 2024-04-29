@@ -3,11 +3,13 @@ import { ChannelData } from '../types/chatProps.type';
 import useChat from '../hooks/useChat';
 import styled from 'styled-components';
 import InteractionLayout from './InteractionLayout/InteractionLayout';
+import useSaveLayoutConfig from '../hooks/useSaveLayoutConfig';
 
 const ChatLayout = (props: { chatList: { messages: any[] } }) => {
   const { chatList } = props;
+
   return (
-    <InteractionLayout type="chat">
+    <InteractionLayout type="chat" saveCallback={useSaveLayoutConfig}>
       <Container>
         {chatList.messages.map((msg: any) => {
           return (

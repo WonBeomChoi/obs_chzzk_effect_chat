@@ -7,6 +7,7 @@ export interface ChangeHandler {
 export interface InteractionLayoutProps {
   children: ReactNode;
   type: 'chat' | 'effect';
+  saveCallback: (type: 'chat' | 'effect') => void;
 }
 
 // H : horizon

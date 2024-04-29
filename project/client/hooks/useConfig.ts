@@ -12,33 +12,16 @@ export function useConfig() {
 
   // 초기 세팅값 불러오기
   useEffect(() => {
-    const CONFIG = getConfig();
+    const { chat, effect, onSetting } = getConfig();
 
-    setChatConfig(CONFIG.chat);
-    setEffectConfig(CONFIG.effect);
-    setOnSetting(CONFIG.onSetting);
+    setChatConfig(chat);
+    setEffectConfig(effect);
+    setOnSetting(onSetting);
   }, []);
-
-  // mouse up 시 저장
-  // 먼가 로직을 여기 두지 말고 Interaction Layout 에 넣는게 낫나?
-  useEffect(() => {
-    const handler = () => {
-      setConfig({
-        chat: chatConfig,
-        effect: effectConfig,
-      });
-    };
-
-    window.addEventListener('mouseup', handler);
-
-    return () => {
-      window.removeEventListener('mouseup', handler);
-    };
-  }, [chatConfig, effectConfig]);
 
   // 이벤트 잠금
   useEffect(() => {
-    window.addEventListener('keydown', (e) => {
+    const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey && (e.key === 'k' || e.key === 'ㅏ')) {
         setOnSetting((prev) => {
           setConfig({
@@ -47,7 +30,12 @@ export function useConfig() {
           return !prev;
         });
       }
-    });
+    };
+
+    window.addEventListener('keydown', handler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+    };
   }, []);
 
   // 리렌더링시 불필요하게 재생성 되는 일 방지

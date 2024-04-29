@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { EffectType } from '../types/effect.type';
 import InteractionLayout from './InteractionLayout/InteractionLayout';
+import useSaveLayoutConfig from '../hooks/useSaveLayoutConfig';
 
 const EffectLayout = (props: EffectType) => {
   return (
-    <InteractionLayout type="effect">
+    <InteractionLayout type="effect" saveCallback={useSaveLayoutConfig}>
       {props.effect || (
         <Effect effect={'http://localhost:3000/effects/' + props.effectName + '.gif'} />
       )}

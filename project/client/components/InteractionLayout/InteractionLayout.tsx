@@ -4,13 +4,16 @@ import { registMouseDownDrag } from './util';
 import { useInteractions } from './useInteractions';
 import { InteractionLayoutProps } from './type';
 
-function InteractionLayout({ children, type }: InteractionLayoutProps) {
+function InteractionLayout({ children, type, saveCallback }: InteractionLayoutProps) {
   const { x, y, width, height, handleMove, handleResize, onSetting } = useInteractions(type);
+
+  saveCallback(type);
 
   const LayoutStyle = {
     transform: `translateX(${x}px) translateY(${y}px)`,
     width: width,
     height: height,
+    cursor: onSetting ? 'move' : 'initial',
   };
 
   const mouseDownHandler = onSetting ? registMouseDownDrag(handleMove, {}, 'move') : undefined;
@@ -40,7 +43,6 @@ export default InteractionLayout;
 
 const Layout = styled.div`
   position: absolute;
-  cursor: move;
 `;
 
 const ResizeDefault = styled.div`
