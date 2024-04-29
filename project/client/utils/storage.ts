@@ -23,7 +23,7 @@ export const getConfig: GetConfigs = () => {
 
 // set localStorage
 // useEffect 내부에서 사용
-export const setConfig = (data: any) => {
+export const updateConfig = (data: any) => {
   const prevConfig = localStorage.getItem('obs_chzzk');
   const parsedPrevConfig = JSON.parse(prevConfig!);
 
