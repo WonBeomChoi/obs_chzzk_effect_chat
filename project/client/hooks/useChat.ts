@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChannelData } from '../types/chatProps.type';
-import { TRIGGERS } from '../constants/constants';
+import { EFFECTS } from '../constants/constants';
 
 interface Message {
   chatId: string;
@@ -17,8 +17,8 @@ const useChat = (props: { channelData: ChannelData }) => {
     return messageList.map((message: any) => {
       const { msg, extras, profile, uid, utime } = message;
 
-      TRIGGERS.map(({ keyword, eventName }) => {
-        if (msg.includes(keyword)) {
+      EFFECTS.map(({ keywords, eventName }) => {
+        if (keywords.some((keyword) => msg.includes(keyword))) {
           const event: CustomEvent = new CustomEvent(eventName);
           window.dispatchEvent(event);
         }
