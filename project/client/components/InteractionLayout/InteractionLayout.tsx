@@ -10,15 +10,18 @@ function InteractionLayout({ children, type }: InteractionLayoutProps) {
 
   const { onSetting } = useConfig();
 
+  const LayoutStyle = {
+    transform: `translateX(${x}px) translateY(${y}px)`,
+    width: width,
+    height: height,
+  };
+
+  const mouseDownHandler = onSetting.state
+    ? registMouseDownDrag(handleMove, {}, 'move')
+    : undefined;
+
   return (
-    <Layout
-      style={{
-        transform: `translateX(${x}px) translateY(${y}px)`,
-        width: width,
-        height: height,
-      }}
-      onMouseDown={onSetting.state ? registMouseDownDrag(handleMove, {}, 'move') : undefined}
-    >
+    <Layout style={LayoutStyle} onMouseDown={mouseDownHandler}>
       {onSetting.state && (
         <>
           <N onMouseDown={registMouseDownDrag(handleResize, { V: 'N' })} />
