@@ -11,6 +11,9 @@ import { ChannelData } from './client/types/chatProps.type';
 import App from './client/App';
 
 const app = express();
+app.use('/static', express.static(path.join(__dirname, '/dist/client')));
+app.use('/effects', express.static(path.join(__dirname, '/effects')));
+
 // 치지직 채팅연결을 위한 데이터 가져오기함수
 const getChannelData = async (id: string): Promise<ChannelData | null> => {
   try {
@@ -38,8 +41,6 @@ const getChannelData = async (id: string): Promise<ChannelData | null> => {
     return null;
   }
 };
-app.use('/chat', express.static(path.join(__dirname, 'dist/client')));
-app.use('/effects', express.static(path.join(__dirname, '/effects')));
 
 app.get('/chat/:id', async (req: Request, res: Response) => {
   try {
@@ -57,6 +58,23 @@ app.get('/chat/:id', async (req: Request, res: Response) => {
     const renderedHtml = indexHtml.replace(
       '<div id="root"></div>',
       `<div id="root" ${channelDataAtrribute}>${appString}</div>`,
+    );
+    res.send(renderedHtml);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/admin', async (req, res) => {
+  try {
+    const sheet = new ServerStyleSheet();
+    const component = sheet.collectStyles(React.createElement(App));
+    const appString = renderToString(StaticRouter({ children: component, location: req.url }));
+    const indexHtml = fs.readFileSync('./dist/client/index.html', 'utf8');
+    const renderedHtml = indexHtml.replace(
+      '<div id="root"></div>',
+      `<div id="root">${appString}</div>`,
     );
     res.send(renderedHtml);
   } catch (error) {

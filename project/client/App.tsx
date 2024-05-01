@@ -12,6 +12,7 @@ function App(props: ChannelData) {
       <GlobalStyle />
       <Routes>
         <Route path="/chat/:id" element={<Overlay {...props} />} />
+        <Route path="/admin" element={<div>hi</div>} />
       </Routes>
     </>
   );
