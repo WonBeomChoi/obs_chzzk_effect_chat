@@ -6,7 +6,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import Overlay from './pages/Overlay';
 
-function App(props: ChannelData) {
+function App(props: any) {
   return (
     <>
       <GlobalStyle />

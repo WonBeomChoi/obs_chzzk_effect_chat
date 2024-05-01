@@ -51,8 +51,8 @@ app.get('/chat/:id', async (req: Request, res: Response) => {
       return;
     }
     const sheet = new ServerStyleSheet();
-    const component = sheet.collectStyles(React.createElement(App, channelData));
-    const appString = renderToString(StaticRouter({ children: component, location: req.url }));
+    const component = sheet.collectStyles(<App {...channelData} />);
+    const appString = renderToString(<StaticRouter location={req.url}>{component}</StaticRouter>);
     const indexHtml = fs.readFileSync('./dist/client/index.html', 'utf8');
     const channelDataAtrribute = `data-user-id="${channelData.uid}" data-channel-id="${channelData.channelId}" data-access-token="${channelData.accessToken}"`;
     const renderedHtml = indexHtml.replace(
@@ -69,8 +69,8 @@ app.get('/chat/:id', async (req: Request, res: Response) => {
 app.get('/admin', async (req, res) => {
   try {
     const sheet = new ServerStyleSheet();
-    const component = sheet.collectStyles(React.createElement(App));
-    const appString = renderToString(StaticRouter({ children: component, location: req.url }));
+    const component = sheet.collectStyles(<App props={undefined} />);
+    const appString = renderToString(<StaticRouter location={req.url}>{component}</StaticRouter>);
     const indexHtml = fs.readFileSync('./dist/client/index.html', 'utf8');
     const renderedHtml = indexHtml.replace(
       '<div id="root"></div>',
