@@ -7,10 +7,20 @@ export interface LayoutConfig {
   height: number;
 }
 
+export interface EffectInfo {
+  eventName: string;
+  keywords: string[];
+  url: string;
+  runningTime: number;
+}
+
+export type EffectInfos = Record<string, EffectInfo>;
+
 export type AppConfigs = {
   chat: LayoutConfig;
   effect: LayoutConfig;
   onSetting: boolean;
+  effectInfos: Record<string, EffectInfo>;
 };
 
 type ContextValues = {
@@ -18,11 +28,13 @@ type ContextValues = {
     chat: LayoutConfig;
     effect: LayoutConfig;
     onSetting: boolean;
+    effectInfos: EffectInfos;
   };
   setStates: {
     chat: Dispatch<SetStateAction<LayoutConfig>>;
     effect: Dispatch<SetStateAction<LayoutConfig>>;
     onSetting: Dispatch<SetStateAction<boolean>>;
+    effectInfos: Dispatch<SetStateAction<EffectInfos>>;
   };
 };
 

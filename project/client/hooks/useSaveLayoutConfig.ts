@@ -4,7 +4,6 @@ import { updateConfig } from '../utils/storage';
 
 function useSaveLayoutConfig(type: 'chat' | 'effect') {
   const { states } = useConfigValues();
-
   const config = states[type];
 
   useEffect(() => {

@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import useChat from '../hooks/useChat';
 import { useShow } from '../hooks/useShow';
-import { useConfig } from '../hooks/useConfig';
 
 import { EffectType } from '../types/effect.type';
 import { ChannelData } from '../types/chatProps.type';
-import { DEFAULT_CONFIG, EFFECTS } from '../constants/constants';
+import { DEFAULT_CONFIG } from '../constants/constants';
 
 import ChatLayout from '../components/ChatLayout';
 import EffectLayout from '../components/EffectLayout';
+import { useConfigValues } from '../context/config';
 
 function Overlay(props: ChannelData) {
+  const {
+    states: { onSetting, effectInfos },
+    setStates: { chat: setChatConfig, effect: setEffectConfig },
+  } = useConfigValues();
+
+  const EFFECTS = useMemo(() => Object.values(effectInfos), [effectInfos]);
+
   const [effect, setEffect] = useState<EffectType>({
     effect: true,
     effectUrl: '',
   });
   useEffect(() => {
-    Object.values(EFFECTS).forEach(({ eventName, url, runningTime }) => {
+    EFFECTS.forEach(({ eventName, url, runningTime }) => {
       window.addEventListener(eventName, () => {
         if (effect) {
           setEffect({ effect: false, effectUrl: url });
@@ -30,13 +37,8 @@ function Overlay(props: ChannelData) {
     });
   }, []);
 
-  const chatList = useChat({ channelData: props });
+  const chatList = useChat({ channelData: props, EFFECTS });
   const { showChat, showEffect } = useShow();
-
-  const {
-    states: { onSetting },
-    setStates,
-  } = useConfig();
 
   return (
     <>
@@ -44,8 +46,8 @@ function Overlay(props: ChannelData) {
         <SettingsContainer>
           <button
             onClick={() => {
-              setStates.chat(DEFAULT_CONFIG.chat);
-              setStates.effect(DEFAULT_CONFIG.effect);
+              setChatConfig(DEFAULT_CONFIG.chat);
+              setEffectConfig(DEFAULT_CONFIG.effect);
             }}
           >
             설정 초기화

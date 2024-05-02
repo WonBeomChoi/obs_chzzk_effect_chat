@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ChannelData } from '../types/chatProps.type';
-import { EFFECTS } from '../constants/constants';
+import { EffectInfo } from '../context/config';
 
 interface Message {
   chatId: string;
@@ -9,9 +9,9 @@ interface Message {
   nickname: string;
 }
 
-const useChat = (props: { channelData: ChannelData }) => {
+const useChat = (props: { channelData: ChannelData; EFFECTS: EffectInfo[] }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const { channelData } = props;
+  const { channelData, EFFECTS } = props;
 
   const messageParser = useCallback((messageList: any): Message[] => {
     return messageList.map((message: any) => {
