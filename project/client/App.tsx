@@ -13,9 +13,11 @@ import useSaveOnSetting from './hooks/useSaveOnSetting';
 function App(props: any) {
   const configStates = useConfig();
 
-  const { setStates } = configStates;
+  const {
+    setStates: { onSetting: setOnSetting },
+  } = configStates;
 
-  useSaveOnSetting(setStates.onSetting);
+  useSaveOnSetting(setOnSetting);
 
   return (
     <ConfigContext.Provider value={configStates}>
