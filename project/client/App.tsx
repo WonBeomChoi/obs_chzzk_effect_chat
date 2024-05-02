@@ -5,16 +5,26 @@ import { ChannelData } from './types/chatProps.type';
 import GlobalStyle from './styles/GlobalStyle';
 import { Route, Routes } from 'react-router-dom';
 import Overlay from './pages/Overlay';
+import Admin from './pages/Admin';
+import { ConfigContext } from './context/config';
+import { useConfig } from './hooks/useConfig';
+import useSaveOnSetting from './hooks/useSaveOnSetting';
 
 function App(props: any) {
+  const configStates = useConfig();
+
+  const { setStates } = configStates;
+
+  useSaveOnSetting(setStates.onSetting);
+
   return (
-    <>
+    <ConfigContext.Provider value={configStates}>
       <GlobalStyle />
       <Routes>
         <Route path="/chat/:id" element={<Overlay {...props} />} />
-        <Route path="/admin" element={<div>hi</div>} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
-    </>
+    </ConfigContext.Provider>
   );
 }
 
