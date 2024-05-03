@@ -6,7 +6,6 @@ import { useShow } from '../hooks/useShow';
 
 import { EffectType } from '../types/effect.type';
 import { ChannelData } from '../types/chatProps.type';
-import { DEFAULT_CONFIG } from '../constants/constants';
 
 import ChatLayout from '../components/ChatLayout';
 import EffectLayout from '../components/EffectLayout';
@@ -15,7 +14,6 @@ import { useConfigValues } from '../context/config';
 function Overlay(props: ChannelData) {
   const {
     states: { onSetting, effectInfos },
-    setStates: { chat: setChatConfig, effect: setEffectConfig },
   } = useConfigValues();
 
   const EFFECTS = useMemo(() => Object.values(effectInfos), [effectInfos]);
@@ -35,7 +33,7 @@ function Overlay(props: ChannelData) {
         }
       });
     });
-  }, []);
+  }, [EFFECTS]);
 
   const chatList = useChat({ channelData: props, EFFECTS });
   const { showChat, showEffect } = useShow();
@@ -46,11 +44,10 @@ function Overlay(props: ChannelData) {
         <SettingsContainer>
           <button
             onClick={() => {
-              setChatConfig(DEFAULT_CONFIG.chat);
-              setEffectConfig(DEFAULT_CONFIG.effect);
+              localStorage.clear();
             }}
           >
-            설정 초기화
+            로컬스토리지 비우기
           </button>
         </SettingsContainer>
       )}
