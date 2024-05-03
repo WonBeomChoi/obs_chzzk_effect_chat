@@ -23,10 +23,10 @@ function Overlay(props: ChannelData) {
     effectUrl: '',
   });
   useEffect(() => {
-    const handlers: any = [];
+    const listeners: [string, EventListener][] = [];
 
     EFFECTS.forEach(({ eventName, effectUrl, runningTime }) => {
-      const handler = () => {
+      const listener = () => {
         if (effect) {
           setEffect({ effect: false, effectUrl });
           setTimeout(() => {
@@ -35,13 +35,13 @@ function Overlay(props: ChannelData) {
         }
       };
 
-      window.addEventListener(eventName, handler);
-      handlers.push([eventName, handler]);
+      window.addEventListener(eventName, listener);
+      listeners.push([eventName, listener]);
     });
 
     return () => {
-      handlers.forEach(([eventName, handler]: any) => {
-        window.removeEventListener(eventName, handler);
+      listeners.forEach(([eventName, listener]) => {
+        window.removeEventListener(eventName, listener);
       });
     };
   }, [EFFECTS]);
