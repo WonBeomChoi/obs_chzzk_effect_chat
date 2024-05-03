@@ -33,7 +33,7 @@ function Overlay(props: ChannelData) {
         }
       });
     });
-  }, [EFFECTS]);
+  }, []);
 
   const chatList = useChat({ channelData: props, EFFECTS });
   const { showChat, showEffect } = useShow();
