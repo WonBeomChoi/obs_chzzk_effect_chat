@@ -8,6 +8,7 @@ export interface LayoutConfig {
 }
 
 export interface EffectInfo {
+  id: string;
   eventName: string;
   keywords: string[];
   url: string;

@@ -13,27 +13,30 @@ const useChat = (props: { channelData: ChannelData; EFFECTS: EffectInfo[] }) => 
   const [messages, setMessages] = useState<Message[]>([]);
   const { channelData, EFFECTS } = props;
 
-  const messageParser = useCallback((messageList: any): Message[] => {
-    return messageList.map((message: any) => {
-      const { msg, extras, profile, uid, utime } = message;
+  const messageParser = useCallback(
+    (messageList: any): Message[] => {
+      return messageList.map((message: any) => {
+        const { msg, extras, profile, uid, utime } = message;
 
-      EFFECTS.map(({ keywords, eventName }) => {
-        if (keywords.some((keyword) => msg.includes(keyword))) {
-          const event: CustomEvent = new CustomEvent(eventName);
-          window.dispatchEvent(event);
-        }
+        EFFECTS.map(({ keywords, eventName }) => {
+          if (keywords.some((keyword) => msg.includes(keyword))) {
+            const event: CustomEvent = new CustomEvent(eventName);
+            window.dispatchEvent(event);
+          }
+        });
+        const emojis = JSON.parse(extras).emojis;
+        const { nickname } = JSON.parse(profile);
+
+        return {
+          nickname: nickname,
+          msg: msg,
+          emojis: emojis,
+          chatId: uid + utime,
+        };
       });
-      const emojis = JSON.parse(extras).emojis;
-      const { nickname } = JSON.parse(profile);
-
-      return {
-        nickname: nickname,
-        msg: msg,
-        emojis: emojis,
-        chatId: uid + utime,
-      };
-    });
-  }, []);
+    },
+    [EFFECTS],
+  );
 
   useEffect(() => {
     const ws = new WebSocket('wss://kr-ss1.chat.naver.com/chat');
@@ -126,7 +129,12 @@ const useChat = (props: { channelData: ChannelData; EFFECTS: EffectInfo[] }) => 
       }
     };
     ws.onclose = () => {};
-  }, []);
+
+    // messageParser 업데이트시 ws 초기화
+    return () => {
+      ws.close();
+    };
+  }, [messageParser]);
   return {
     messages,
   };
