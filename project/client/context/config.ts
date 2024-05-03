@@ -11,7 +11,7 @@ export interface EffectInfo {
   id: string;
   eventName: string;
   keywords: string[];
-  url: string;
+  effectUrl: string;
   runningTime: number;
 }
 

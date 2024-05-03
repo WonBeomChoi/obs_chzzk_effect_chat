@@ -23,10 +23,10 @@ function Overlay(props: ChannelData) {
     effectUrl: '',
   });
   useEffect(() => {
-    EFFECTS.forEach(({ eventName, url, runningTime }) => {
+    EFFECTS.forEach(({ eventName, effectUrl, runningTime }) => {
       window.addEventListener(eventName, () => {
         if (effect) {
-          setEffect({ effect: false, effectUrl: url });
+          setEffect({ effect: false, effectUrl });
           setTimeout(() => {
             setEffect({ effect: true, effectUrl: '' });
           }, runningTime);
