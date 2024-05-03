@@ -23,17 +23,28 @@ function Overlay(props: ChannelData) {
     effectUrl: '',
   });
   useEffect(() => {
+    const handlers: any = [];
+
     EFFECTS.forEach(({ eventName, effectUrl, runningTime }) => {
-      window.addEventListener(eventName, () => {
+      const handler = () => {
         if (effect) {
           setEffect({ effect: false, effectUrl });
           setTimeout(() => {
             setEffect({ effect: true, effectUrl: '' });
           }, runningTime);
         }
-      });
+      };
+
+      window.addEventListener(eventName, handler);
+      handlers.push([eventName, handler]);
     });
-  }, []);
+
+    return () => {
+      handlers.forEach(([eventName, handler]: any) => {
+        window.removeEventListener(eventName, handler);
+      });
+    };
+  }, [EFFECTS]);
 
   const chatList = useChat({ channelData: props, EFFECTS });
   const { showChat, showEffect } = useShow();
